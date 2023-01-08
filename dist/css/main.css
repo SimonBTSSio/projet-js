@@ -1,0 +1,129 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: url("../../macos-big-sur.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  font-family: "Lexend", sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+footer {
+  padding-right: 10%;
+  padding-left: 10%;
+  width: 100%;
+  height: 70px;
+}
+
+/*TOP BAR*/
+.top-bar {
+  background-color: rgba(227, 225, 225, 0.27);
+  opacity: 0.8;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.top-bar-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.top-bar-menu li a {
+  text-decoration: none;
+  color: #f1f1f1;
+}
+
+.ma-10 {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+/*BOTTOM BAR*/
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  background-color: rgba(227, 225, 225, 0.27);
+  width: 80%;
+  height: 100%;
+}
+
+.box {
+  width: 95px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sc {
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.sc::after {
+  color: white;
+  content: attr(title);
+  position: absolute;
+  width: 64px;
+  text-align: center;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8em;
+}
+
+/* fenetre app */
+/* bouton bar des taches */
+.mb {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.2117647059);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mb:hover {
+  background-color: rgba(255, 255, 255, 0.2117647059);
+}
+
+.mb > div {
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}

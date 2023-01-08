@@ -1,0 +1,104 @@
+/*HORLOGE STYLE*/
+.view > nav{
+    display: flex;
+    width: 100%;
+    height: 50px;
+}
+.view > nav > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33.33%;
+    height: 100%;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #fff;
+}
+.active{
+    border-bottom: solid 3px #0077bd;
+}
+.seg{
+    position: relative;
+    width: 100%;
+    height: 90%;
+}
+.seg > div{
+    position: absolute;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+.heure{
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.chronometre{
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.minuteur{
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.minuteur > div{
+    display: flex;
+    flex-direction: column;
+}
+.minuteur > div > div{
+    display: flex;
+    justify-content: center;
+}
+#time{
+    font-weight: bold;
+    font-size: 3em;
+}
+#date{
+    font-weight: bold;
+    font-size: 2em;
+}
+#timer{
+    font-size: 4em;
+    font-weight: bold;
+}
+#pause{
+    display: none;
+
+}
+#reset{
+    display: none;
+}
+
+
+.chrono{
+    display: flex;
+    flex-direction: column;
+}
+.chrono > span{
+    font-weight: bold;
+    font-size: 3em;
+}
+.chrono > div{
+    width: 100%;
+    justify-content: space-around;
+    display: flex;
+}
+.chrono button{
+    font-size: 1.5em;
+}
+.tour{
+    display: flex;
+    flex-direction: column;
+}
+.rt{
+    display: none;
+}

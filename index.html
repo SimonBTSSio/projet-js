@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="dist/css/main.css">
+        <link rel="stylesheet" href="css/horloge.css">
+        <link rel="stylesheet" href="css/window.css">
+        <script src="js/Desktop.js"></script>
+        <script src="js/Lfup.js"></script>
+        <script src="js/Dragndrop.js"></script>
+        <script src="js/Window.js"></script>
+        <script src="js/Dd.js"></script>
+        <script src="js/App.js"></script>
+        <script src="js/clock/Clock.js"></script>
+        <script src="js/clock/HorlogesClasses.js"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <nav class="top-bar">
+            <ul class="top-bar-menu" >
+                <li class="ma-10"><a href=""><img src="./icon/apple_icon.png" alt="" height="20px" width="20px"></a></li>
+                <li class="ma-10"><a href="">File</a></li>
+                <li class="ma-10"><a href="">Edit</a></li>
+                <li class="ma-10"><a href="">View</a></li>
+                <li class="ma-10"><a href="">Go</a></li>
+                <li class="ma-10"><a href="">Tools</a></li>
+                <li class="ma-10"><a href="">help</a></li>
+            </ul>
+
+            <ul class="top-bar-menu">
+                <li class="ma-10"><a href="">batterie</a></li>
+                <li class="ma-10"><a href=""><img src="./icon/control_center.gif" alt="" height="20px" width="20px"></a></li>
+                <li class="ma-10"><a href="">Date</a></li>
+                <li class="ma-10"><a href="">Time</a></li>
+                <li class="ma-10"><a href=""><img src="./icon/charging.png" alt="" height="20px" width="20px"></a></li>
+            </ul>
+        </nav>
+        <main id="desktop">
+
+        </main>
+        <footer id="foot">
+            <div class="bottom-bar">
+                <div class="ma-10 dock-elt"><img src="./icon/dock/contacts.png" alt="" height="60px" width="60px"> </div>
+                <div class="ma-10"><img src="./icon/dock/finder.png" alt=""height="60px" width="60px"> </div>
+                <div class="ma-10"><img src="./icon/dock/calculator.png" height="60px" width="60px" alt="" srcset=""> </div>
+                <div class="ma-10"><img src="./icon/dock/bin.png" height="60px" width="60px" alt="" srcset=""> </div>
+            </div>
+        </footer>
+        <script>
+            let desk = new Desktop();
+            desk.addListener();
+
+            /*WOIN WOIN*/
+            let lfup = new Lfup(1, "url('imgs/folder.svg')", "Folder 1");
+            let lfup2 = new Lfup(2, "url('imgs/text.svg')", "Text 1");
+            let lfup3 = new Lfup(3, "url('imgs/firefox.svg')", "Firefox");
+
+            /* SC 1 */
+            let fc = desk.desk.firstElementChild;
+            fc.append(lfup.div);
+            /* SC 2 */
+            let clockApp = new Clock();
+            let fc2 = desk.desk.children;
+            fc2.item(1).append(lfup2.div);
+            fc2.item(2).append(clockApp.lfup.div);
+            /* SC 3 */
+            let fc3 = desk.desk;
+            fc3.lastChild.append(lfup3.div);
+
+            /* DRAG SYSTEM */
+            let drag = new Dragndrop();
+        </script>
+    </body>
+</html>
