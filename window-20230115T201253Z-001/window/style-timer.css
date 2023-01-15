@@ -1,0 +1,55 @@
+.timer-form{
+    display: flex;
+    width: 350px;
+    height: 225px;
+    justify-content: space-around;
+}
+.timer-input{
+    width: 100px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.timer-input > img{
+    cursor: pointer;
+}
+.timer-input > img:last-child{
+    transform: rotate(180deg);
+}
+.timer-input > input{
+    height: 120px;
+    border-radius: 5px;
+    font-size: 5em;
+    text-align: center;
+}
+.timer-input > input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.timer-control{
+    display: flex;
+    width: 350px;
+    height: 100px;
+    margin-top: 25px;
+    justify-content: space-around;
+}
+
+.timer-control > div{
+    width: 80px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+#timer-start-stop{
+    background-image: url("./start.svg");
+}
+#timer-reset{
+    background-image: url("./round.svg");
+    display: none;
+}
+#show-timer{
+    font-size: 6em;
+    font-family: 'latoBold';
+    display: none;
+}

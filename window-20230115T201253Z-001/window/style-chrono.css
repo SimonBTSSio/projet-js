@@ -1,0 +1,49 @@
+.chronometre{
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'latoBold';
+}
+#chrono-btn > div{
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+}
+.chrono{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+.chrono > span{
+    font-weight: bold;
+    font-size: 5em;
+    margin-bottom: 50px;
+    text-align: center;
+}
+.chrono > div{
+    width: 100%;
+    justify-content: space-around;
+    display: flex;
+}
+#btn-start-stop{
+    background-image: url("./start.svg");
+}
+#btn-reset-round{
+    display: none;
+    background-image: url("./round.svg");
+}
+.tour{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+.tour > span{
+    display: flex;
+    font-family: 'latoLight';
+    font-size: 2em;
+    justify-content: space-around;
+}
+.tour > span > div{
+    font-family: 'latoBold';
+}

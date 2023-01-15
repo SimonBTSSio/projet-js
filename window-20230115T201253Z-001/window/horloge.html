@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style-chrono.css">
+        <link rel="stylesheet" href="style-time.css">
+        <link rel="stylesheet" href="style-timer.css">
+        <style>
+            *{
+                box-sizing: border-box;
+            }
+            @font-face {
+                font-family: 'latoLight';
+                src:  url('./Lato/Lato-Light.ttf') format('truetype');;
+            }
+            @font-face {
+                font-family: 'latoBold';
+                src:  url('./Lato/Lato-Bold.ttf') format('truetype');;
+            }
+            body{
+                margin: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: rebeccapurple;
+            }
+            .container{
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-left: auto;
+                margin-right: auto;
+                width: 1500px;
+                height: 800px;
+                background: white;
+            }
+            /*OLD HOR*/
+            .clock-header{
+                display: flex;
+                width: 100%;
+                height: 50px;
+            }
+            .clock-header > div{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 33.33%;
+                height: 100%;
+                font-size: 2em;
+                font-family: 'latoBold';
+                cursor: pointer;
+                background-color: #fff;
+            }
+            .active{
+                border-bottom: solid 3px #0077bd;
+            }
+            .seg{
+                position: relative;
+                width: 100%;
+                height: 90%;
+            }
+            .seg > div{
+                position: absolute;
+                background-color: #fff;
+                width: 100%;
+                height: 100%;
+                top: 0;
+            }
+            /*minuteur*/
+            .minuteur{
+                z-index: 1;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container view">
+            <nav class="clock-header">
+                <div id="heure" class="clock-btn active">
+                    HEURE / DATE
+                </div>
+                <div id="chronometre" class="clock-btn">
+                    CHRONOMETRE
+                </div>
+                <div id="minuteur" class="clock-btn">
+                    MINUTEUR
+                </div>
+            </nav>
+            <section class="seg">
+                <div class="heure">
+                    <div id="time">14 : 18 : 26</div>
+                    <div id="date">Mardi 10 Janvier 2023</div>
+                </div>
+                <div class="chronometre">
+                    <div class="chrono">
+                        <span id="chrono">0 : 0 : 0.0</span>
+                        <div id="chrono-btn">
+                            <div id="btn-start-stop"></div><div id="btn-reset-round"></div>
+                        </div>
+                        <div class="tour" id="listTour">
+                        </div>
+                    </div>
+                </div>
+                <div class="minuteur">
+                    <div id="show-timer">
+                        0 : 00
+                    </div>
+                    <div class="timer-form" id="timer-form">
+                        <div class="timer-input">
+                          <img src="btn-up-down.svg" class="btn-up-down" data-position="input-left" data-state="up">
+                          <input type="number" value="0" min="0" max="60" id="input-left">
+                          <img src="btn-up-down.svg" class="btn-up-down" data-position="input-left" data-state="down">
+                        </div>
+                        <div class="timer-input">
+                          <img src="btn-up-down.svg" class="btn-up-down" data-position="input-right" data-state="up">
+                          <input type="number" value="0" min="0" max="60" id="input-right">
+                          <img src="btn-up-down.svg" class="btn-up-down" data-position="input-right" data-state="down">
+                        </div>
+                      </div>
+                      <div class="timer-control">
+                        <div id="timer-start-stop"></div>
+                        <div id="timer-reset"></div>
+                      </div>
+                </div>
+            </section>
+        </div>
+        <script>
+            class Timer{
+                //BTN TIMER
+                startBtn = document.getElementById("timer-start-stop");
+                resetBtn = document.getElementById("timer-reset");
+
+                //ATT TIMER
+                timer;
+                isOn = false;
+                launch = false;
+                sec = 0;
+                min = 0;
+                nptS = document.getElementById("input-right");
+                nptM = document.getElementById("input-left");
+                showTimer = document.getElementById("show-timer");
+                timerForm = document.getElementById("timer-form");
+
+                constructor(){
+                    this.startBtn.addEventListener('click', e => {
+                        if(!this.launch){
+                            this.getTime();
+                            this.setTextTimer();
+                        
+                            if(this.sec > 0 || this.min > 0){
+                                this.start();
+                                this.launch = true;
+                                this.startBtn.style.backgroundImage = "url('./stop.svg')";
+                                this.resetBtn.style.display = "block";
+                                this.showTimer.style.display = "block";
+                                this.timerForm.style.display = "none";
+                            }
+                            return;
+                        }
+                        if(this.isOn){
+                            this.startBtn.style.backgroundImage = "url('./start.svg')";
+                            this.isOn = false;
+                        }else{
+                            this.startBtn.style.backgroundImage = "url('./stop.svg')";
+                            this.isOn = true;
+                        }
+                    });
+                    this.resetBtn.addEventListener('click', e => {
+                        this.min = 0;
+                        this.sec = 0;
+                        this.setTextTimer();
+                        this.reset();
+                        this.btnDisplay();
+                        this.showTimer.style.display = "none";
+                        this.timerForm.style.display = "flex";
+                        this.launch = false;
+                    });
+                }
+
+                start(){
+                    this.isOn = true;
+                    this.timer = setInterval(() => {
+                        if(this.isOn){
+                            this.sec -= 1;
+                            if(this.sec == -1){
+                                this.min -= 1;
+                                this.sec = 59;
+                            }
+                            this.setTextTimer();
+                            if(this.sec == 0 && this.min == 0){
+                                this.launch = false;
+                                this.btnDisplay();
+
+                                clearInterval(this.timer);
+                                //let audio = new Audio('timer2.mp3');
+                                //audio.play();
+                                this.showTimer.style.display = "none";
+                                this.timerForm.style.display = "flex";
+                            }
+                        }
+                    }, 1000);
+                }
+
+                reset(){
+                    clearInterval(this.timer);
+                }
+
+                getTime(){
+                    this.sec = this.nptS.value;
+                    this.min = this.nptM.value;
+                }
+
+                setTextTimer(){
+                    let divTimer = document.getElementById("show-timer");
+                    divTimer.innerHTML = this.min + " : " + this.sec;
+
+                }
+
+                btnDisplay(){
+                    this.startBtn.style.backgroundImage = "url('./start.svg')";
+                    this.resetBtn.style.display = "none";
+                }
+
+                dropInterval(){
+                    clearInterval(this.timer);
+                }
+            }
+
+            let btn = document.getElementsByClassName("clock-btn");
+
+            for(let aBtn of btn){
+                aBtn.addEventListener("click", event =>{
+                    for(let aBtnn of btn){
+                        aBtnn.classList.remove();
+                        aBtnn.className = "clock-btn";
+                    }
+
+                    aBtn.className = "clock-btn active";
+                    let seg = document.getElementsByClassName("seg")[0].children;
+                    
+                    for(let aSeg of seg){
+                        aSeg.style.zIndex = "1";
+                    }
+                    document.getElementsByClassName(aBtn.id)[0].style.zIndex = "2";
+                });
+            }
+            class Datetime{
+                weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+                monthNames = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"];
+
+                datetime;
+                today = new Date();
+                time = this.timeToStr(this.today.getHours(), this.today.getMinutes(), this.today.getSeconds());
+                date = this.weekday[this.today.getDay()] + " " + this.today.getDate() + " " + this.monthNames[this.today.getMonth()] + " " + this.today.getFullYear() ;
+
+                divT = document.getElementById("time");
+                divD = document.getElementById("date");
+
+                constructor(){
+                    this.divT.innerHTML = this.time;
+                    this.divD.innerHTML = this.date;
+
+                    this.datetime = setInterval(() => {
+                        let today2 = new Date();
+                    
+                        let time2 = this.timeToStr(today2.getHours(), today2.getMinutes(), today2.getSeconds());
+                        this.divT.innerHTML = time2;
+                    }, 1000);
+                }
+
+                timeToStr(hour, min, sec){
+                    if(hour < 10){
+                        hour = "0" + hour;
+                    }
+                    if(min < 10){
+                        min = "0" + min;
+                    }
+                    if(sec < 10){
+                        sec = "0" + sec;
+                    }
+                    return hour + " : " + min + " : " + sec;
+                }
+
+                dropInterval(){
+                    clearInterval(this.datetime);
+                }
+            }
+            class Chrono{
+                btnST = document.getElementById("btn-start-stop");
+                btnRR = document.getElementById("btn-reset-round");
+
+                mil = 0;
+                sec = 0;
+                min = 0;
+                hour = 0;
+                isOn = false;
+                chrono;
+                nbrTour = 0;
+
+                constructor(){
+                    this.btnST.addEventListener('click', e => {
+                        if(this.sec == 0){
+                            this.btnRR.style.display = 'block';
+                        }
+                        if(!this.isOn){
+                            this.btnRR.style.backgroundImage = "url('./round.svg')";
+                            this.start();
+                            this.btnST.style.backgroundImage = "url('./stop.svg')";
+                        }else{
+                            this.btnRR.style.backgroundImage = "url('./reset.svg')";
+                            this.stop();
+                            this.btnST.style.backgroundImage = "url('./start.svg')";
+                        }
+                    });
+
+                    this.btnRR.addEventListener('click', e => {
+                        let div = document.getElementById("listTour");
+                        if(this.isOn){
+                            this.nbrTour += 1;
+                            let tours = document.createElement("span");
+                            tours.innerHTML = "<div>Tour n°" + this.nbrTour + "</div> " + this.hour + " : " + this.min + " : " + this.sec + " . " + this.mil;
+                            div.appendChild(tours);
+                        }else{
+                            div.innerHTML = '';
+                            this.btnRR.style.display = 'none';
+                            this.clear();
+                        }
+                    });
+                }
+
+                start(){
+                    this.isOn = true;
+                    this.chrono =  setInterval(() => {
+                        this.mil += 1;
+                        if(this.mil == 100){
+                            this.sec += 1;
+                            this.mil = 0;
+                        }
+                        if(this.sec == 60){
+                            this.min += 1;
+                            this.sec = 0;
+                        }
+                        if(this.min == 60){
+                            this.hour += 1;
+                            this.min = 0;
+                        }
+                        this.setTextChrono();
+                    }, 10);
+                }
+
+                stop(){
+                    this.isOn = false;
+                    clearInterval(this.chrono);
+                }
+
+                clear(){
+                    this.nbrTour = 0;
+                    this.mil = 0;
+                    this.sec = 0;
+                    this.min = 0;
+                    this.hour = 0;
+                    this.setTextChrono();
+                }
+
+                setTextChrono(){
+                    let visu = document.getElementById("chrono");
+                    visu.innerHTML = this.hour + " : " + this.min + " : " + this.sec + " . " + this.mil;
+                }
+
+                dropInterval(){
+                    clearInterval(this.chrono);
+                }
+            }
+            let dt = new Datetime();
+            let tm = new Timer();
+            let cr = new Chrono();
+            /*timer*/
+            let btn2 = document.getElementsByClassName("btn-up-down");
+
+            for(let aBtn of btn2){
+                aBtn.addEventListener("click", event =>{
+                    let input = document.getElementById(aBtn.dataset.position);
+                    if(input.value == "" && aBtn.dataset.state != "down"){
+                    input.value = 1;
+                    return;
+                    }
+                    if(aBtn.dataset.state == "up"){
+                    input.value = Number(input.value) + 1;
+                    return;
+                    }
+                    
+                    if(input.value > 0){
+                    input.value = Number(input.value) - 1;
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
